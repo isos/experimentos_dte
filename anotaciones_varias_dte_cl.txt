@@ -1,0 +1,135 @@
+Anotaciones de Facturacion Electronica CL 
+=========================================
+
+Mi visión de como organizar los módulos:
+========================================
+
+l10n_cl_dte
+
+Modulo de Folios
+	tipo de documento many2one con modulo de tipo de documentos
+	nro inicial
+	nro final
+	validez (?)
+	xml
+	al principio copiar xml y pegarlo dentro
+	en segunda etapa adquisicion automatica
+
+
+l10n_cl_invoice (fork de l10n_ar_invoice)
+
+Modulo de tipos de documentos sii
+	codigo de sii
+	tipo de documento
+
+
+Modulo de criptografia
+	nombre del certificado
+	key publica
+	crt privada
+
+l10n_cl_wssii_dte
+Modulo de webservices (fork de l10n_ar_wsafip_fe)
+	servidor
+	direccion
+	homologacion/produccion
+
+Modulo de dte hereda a account_invoice
+	boton "enviar dte (sii)"
+	boton "enviar dte (partner)"
+
+Modulo de impresion de dte (pdf417)
+
+
+17 Puntos a cubrir para realizar la implementación
+==================================================
+
+OK		1. Definir los usuarios autorizados por la empresa para solicitar folios autorizados, 
+		firmar con sus certificados digitales los documentos tributarios electrónicos de su empresa y enviarlos al SII. 
+OK		2. Obtener Certificados digitales para los usuarios autorizados por su empresa, definidos 
+		en el punto anterior. Estos certificado digitales deben obtenerse de las entidades certificadoras acreditadas ante el SII o ante la Subsecretaría de Economía, para proveer certificados digitales con fines tributarios.Servicio de Impuestos Internos SII-Modelo Factura-Electrónica 18 Agosto 2003
+		Pág. 8 de 9
+MANUAL	3. Diseñar el procedimiento que le permita obtener un rango de folios autorizados desde el SII, 
+		vía Internet y alimentar con dicha información su software de facturación o emisión de documentos
+		tributarios electrónicos y cautelar adecuadamente su seguridad.
+FALTA	4. Adecuar su sistema computacional de facturación para incorporar la generación de los
+		documentos tributarios electrónicos, en el formato estándar definido por el SII, y generar el timbre electrónico de acuerdo con el algoritmo especificado por el SII.
+FALTA	5. Diseñar un procedimiento que le permita firmar, con llave privada del signatario autorizado, el
+		DTE completo.
+FALTA	6. Contar con software de manejo de códigos de barra bidimensionales (PDF417) que le permita
+		generar e imprimir un código de barra bidimensional que contenga la información especificada
+		por el SII (el timbre electrónico y la información requerida para verificarlo).
+			http://www.sii.cl/factura_electronica/instructivo_emision.pdf
+				La información incluida en la impresión del Timbre Electrónico es:
+					1. Versión del timbre electrónico
+					2. Rut del Emisor
+					3. Tipo de Documento
+					4. Número de Folio
+					5. Fecha de emisión
+					6. Rut del Receptor
+					7. Razón Social Receptor
+					8. Monto total
+					9. Descripción del primer Item del Detalle
+					10. Fecha y hora de generación del timbre electrónico,
+					11. Código de Autorización de Folios (proporcionado por el SII)
+					12. Algoritmo de firma (Hash y encriptación) que se usó en la firma con que
+					generó el timbre
+					13. Firma digital sobre los datos anteriores, con la llave privada entregada por
+					el SII para dicho propósito.
+			http://stackoverflow.com/questions/7080119/any-good-pdf417-barcode-libraries-for-python (elaphe)
+			http://www.terryburton.co.uk/barcodewriter/generator/
+			http://two.pairlist.net/pipermail/reportlab-users/2008-December/007830.html (rml reportlab)
+			http://sourceforge.net/projects/pdf417encode/files/latest/download
+			https://pypi.python.org/pypi/elaphe/0.5.3
+				pillow (python-image-library (PIL) fork)
+				http://www.terryburton.co.uk/barcodewriter/
+			Para decodificar lo que tiene metido el pdf417:
+				http://zxing.org/w/decode.jspx
+			
+
+
+
+FALTA	7. Adecuar sus procedimientos y formularios de impresión, para la correcta impresión del
+		documento, según la norma del SII, incluyendo el timbre electrónico en representación gráfica
+		PDF417.
+FALTA	8. Diseñar la generación computacional de la información de los libros de compra y de venta, en el
+		formato estándar definido por el SII.
+FALTA	9. Diseñar la generación computacional de la información que el SII podría requerir en forma
+		electrónica para la fiscalización.
+FALTA	10. Diseñar el mecanismo para enviar los documentos e información de los libros al SII, vía 	
+		Internet, y al receptor electrónico (contribuyentes incorporados al sistema) los documentos, por el medio que acuerden mutuamente, respetando el estándar mínimo establecido por el SII.
+FALTA	11. Definir un procedimiento de respaldo y recuperación de DTEs, ya que el ejemplar enviado al SII
+		se conservará sólo para uso tributario.
+FALTA	12. Contar con lo necesario para realizar la recepción de documentos tributarios electrónicos que
+		le enviarán otros contribuyentes autorizados y que está obligado a recibir. La recepción debe
+		contemplar la emisión del comprobante de recepción y de rechazo, de acuerdo al estándar mínimo
+		establecido por el SII. A este punto se le debe poner mucha atención ya que en el momento de
+	 	ingresar al sistema empezará a recibir documentos desde otros emisores electrónicos y debe
+		tener muy bien definido cual será el flujo que éstos tomarán al interior de su empresa.
+FALTA	13. Proveer las opciones de consulta e impresión de información que eventualmente serán utilizadas
+		por los fiscalizadores del SII, en el cumplimiento de su labor.
+OK		14. Postular en www.sii.cl a la emisión de documentos tributarios electrónicos. Esta postulación 
+		debe ser hecha por un representante de la empresa, con certificado digital, ingresando los datos
+		requeridos de la empresa.
+OK		15. Obtener Set de pruebas y documentación para certificación. Aprobada la postulación el
+		contribuyente tendrá acceso al ambiente de certificación de SII, a documentación para operar en él
+		y a un set de pruebas que indicará un conjunto de datos con los que debe construir un envío de
+		documentos al SII, el que debe ser recibido sin rechazos ni reparos.
+		16. Informar al SII del avance en las pruebas, notificando a través de la página web el éxito de cada hito de la certificación. Servicio de Impuestos Internos
+FALTA	17. Obtener la Resolución que lo autoriza como Emisor de Documentos Tributarios Electrónicos. Si
+		las pruebas de certificación se completan exitosamente, el SII emitirá una Resolución que autoriza
+		al contribuyente a operar con la Factura Electrónica a partir del período tributario
+		correspondiente. 
+
+Descartar Aeroo - trabajar con Qweb
+        
+
+esta en estos módulos.
+l10n_ar_aeroo_base
+l10n_ar_aeroo_einvoice
+l10n_ar_aeroo_invoice
+l10n_ar_aeroo_purchase
+l10n_ar_aeroo_receipt
+l10n_ar_aeroo_sale
+l10n_ar_aeroo_stock
+
