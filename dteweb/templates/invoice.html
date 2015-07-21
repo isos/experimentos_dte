@@ -1,0 +1,257 @@
+{% extends "layout.html" %}
+{% block title %}Invoice{% endblock %}
+{% block body %}
+        <div style="width:910px">
+            <div style="float:left;width:900px;height:159px;">
+                <div style="
+                    line-height: 0px;
+                    z-index:0;
+                    /*background-color: rgb(242, 237, 237);*/
+                    float: left;
+                    margin-left: 20px;
+                    font-weight:bolder;
+                    color: rgb(68, 64, 64);
+                    text-align:left;
+                    line-height:9px;
+                    width: 560px;
+                    height: 135px;
+                    ">
+                    <h2>{{ head.company_name }}</h2>
+                    <p style="font-size:12px;">{{ head.company_slogan }}</p>
+                    <div style="height:72px;width:300px;">
+                        <img src="{{ head.company_logo }}" height="70" />
+                    </div>
+                </div>
+                <div style="width:300px height: 135px;">
+                    <div style="
+                        z-index:10;
+                        background-color: rgba(240, 240, 228, 0.68);
+                        margin-left: 10px;
+                        margin-right:10px;
+                        
+                        float: right;
+                        border-color: red;
+                        top: 0px;
+                        border-style: solid;
+                        font-weight:bolder;
+                        font-size:16px;
+                        color:red;
+                        line-height: 25px;
+                        text-align:center;
+                        width:290px;
+                        height: 118px;
+                        padding-bottom: 0px;
+                        margin-bottom: 10px;
+                        ">
+                        <br />R.U.T.: {{ head.company_vat }}<br />
+                        {{ head.sii_document_class_id.1 }}<br />
+                        N° {{ head.sii_document_number }}
+                    </div>
+                    <div style="
+                        text-align: center;font-weight:bold;font-size:11px;
+                        ">
+                        <br />{{ head.company_sii_location }}
+                    </div>
+                </div>
+            </div>
+            <div style="width:900px;line-height:13px;">
+                <div style="float:left;font-weight:bold;width:120px;margin-left:23px;
+                    ">
+                    Dirección:<br /><br />
+                    Mesa Central:<br />
+                    Fax:
+                </div>
+                <div style="float:left;width:520px">
+                    <strong>Casa Matriz</strong>, {{ head.prim_company_address }}, {{ head.prim_company_comuna }}, {{ head.prim_company_city }} {{ head.prim_company_country }}.<br  /> 
+                    <strong>Sucursal</strong>,  {{ head.sec_company_address }}, {{ head.sec_company_comuna }}, {{ head.sec_company_city }} {{ head.sec_company_country }}.<br  />
+                     {{ head.prim_company_phone }}<br  />
+                     {{ head.prim_company_fax }}	
+                </div>
+                
+            </div>
+            <div style="
+                float:left;
+                width: 845px;
+                height: 123px;
+                border-style:solid;
+                border-radius: 1em;
+                border-style: solid;
+                border-width: thin;
+                margin-left: 20px;
+                margin-top: 13px;
+                padding-left: 10px;
+                padding-top: 10px;
+                padding-right: 10px;
+                padding-bottom: 10px;
+                ">	
+                <div style="float:left;font-weight:bold;width:100px;line-height: 18px;">
+                    Cliente<br />
+                    RUT<br />
+                    Giro<br />
+                    Dirección<br />
+                    Comuna<br />
+                    Ciudad
+                </div>
+                <div style="float:left;width:380px;line-height: 18px;">
+                    : {{ partner.name|fixlen(40) }}<br />
+                    : {{ partner.vat|format_vat }}<br />
+                    : {{ partner.activity_name|fixlen(40) }}<br />
+                    : {% if partner.street %}{{ partner.street|fixlen(40) }}{% else %}&nbsp;{% endif %}<br />
+                    : {% if partner.state_id.1 %}{{ partner.state_id.1|comuna|fixlen(16) }}{% else %}&nbsp;{% endif %}<br />
+                    : {% if partner.city %}{{ partner.city|fixlen(16) }}{% else %}&nbsp;{% endif %}<br /> 
+                </div>
+                <div style="float:left;font-weight:bold;width:120px;margin-left:23px;line-height: 18px;">
+                    Emitido<br />
+                    Vence<br />
+                    Pago<br /><br />
+                    Contacto<br />
+                    Vendedor
+                </div>
+                <div style="float:left;width:220px;line-height: 18px;">
+                    :  {{ head.date_invoice }}<br />
+                    :  {{ head.date_due }}<br />
+                    :  {{ head.payment }}<br /><br />
+                    :  {{ head.res_partner_contact_name }} {{ head.res_partner_contact_name }}<br />
+                    :  {{ head.res_partner_salesman_name }}
+                </div>
+            </div>
+            <div class="invoice_red_head">
+                <div style="width: 109px;padding-left: 1px;" class="invoice_read_subs">
+                    Codigo
+                </div>
+                <div style="width: 321px;" class="invoice_read_subs">
+                    Descripcion
+                </div>
+                <div style="width: 58px;" class="invoice_read_subs">
+                    Cantidad
+                </div>
+                <div style="width: 105px;" class="invoice_read_subs">
+                    Precio Unitario
+                </div>
+                <div style="width: 57px;" class="invoice_read_subs">
+                    Dcto %
+                </div>
+                <div style="width: 89px;" class="invoice_read_subs">
+                    Dcto
+                </div>
+                <div style="width: 88px;padding-top: 5px;padding-left: 12px;">
+                    Total
+                </div>
+            </div>
+            <div class="sale_body">
+                <div style="width:102px;padding-left:1px;" class="sale_body_columns sale_line borderrightinvisible">
+                    &nbsp;
+                </div>
+                <div style="width: 314px;" class="sale_body_columns sale_line">
+                    &nbsp;
+                </div>
+                <div style="width: 51px;" class="sale_body_columns sale_line">
+                    &nbsp;
+                </div>
+                <div style="width: 98px;" class="sale_body_columns sale_line">
+                    &nbsp;
+                </div>
+                <div style="width: 50px;" class="sale_body_columns sale_line">
+                    &nbsp;
+                </div>
+                <div style="width: 82px;" class="sale_body_columns sale_line">
+                    &nbsp;
+                </div>
+                <div style="width: 100px;border-right-color:white!important;" class="sale_body_columns sale_line">
+                    &nbsp;
+                </div>
+                {% for p in lines %}
+                <div class="parent_sale_line">
+                    <div class="sale_line absol" style="width:406px;text-align:left!important;">
+                        {{ p.name|fixlen(40) }}
+                    </div>
+                    <div class="sale_line absol" style="left:435px;width:51px;">
+                        {{ p.quantity|integ|righted(2)|zeroempty }}
+                    </div>
+                    <div class="sale_line absol"  style="left:490px;width:98px;">
+                        $ {{ p.price_unit|format_currency|righted(9) }}
+                    </div>
+                    <div class="sale_line absol"  style="left:597px;width: 50px;">
+                        {{ p.discount_perc|integ|righted(9)|zeroempty }} %
+                    </div>
+                    <div class="sale_line absol"  style="left:653px;width:82px;">
+                        $ {{ p.discount_amount|format_currency|righted(9)|zeroempty }}
+                    </div>
+                    <div class="sale_line absol"  style="left:745px;width:112px;">
+                        $ {{ p.price_subtotal|format_currency|righted(9) }}
+                    </div>
+                </div>                
+                {% endfor %}
+            </div>
+            <div class="parent_footer_line">
+                <div style="width: 220px;" class="footer_read_head">
+                    Documento Ref.
+                </div>
+                <div style="width: 100px;" class="footer_read_head">
+                    Folio
+                </div>
+                <div style="width: 100px;" class="footer_read_head">
+                    Fecha
+                </div>
+                <div style="border-right-color:black!important;width: 170px;" class="footer_read_head"> 
+                    Razon Ref.
+                </div>
+                <div class="totalbox_description">	
+                    NETO $
+                </div>
+                <div class="totalbox_amount">
+                    $ {{ head.amount_untaxed|format_currency|righted(12) }}
+                </div>
+                <!--kdkdkd-->
+            </div>
+            <div class="parent_footer_line">
+                <div class="footer_reference" style="border-top-color:black!important;border-top-width:1px!important;">
+                    &nbsp;
+                </div>
+                <div class="totalbox_description">	
+                    IVA 19  %
+                </div>
+                <div class="totalbox_amount">	
+                    $ {{ head.amount_tax|format_currency|righted(12) }}
+                </div>
+            </div>
+            <div class="parent_footer_line">
+                <div class="footer_reference">
+                    &nbsp;
+                </div>
+                <div class="totalbox_description">	
+                    TOTAL $
+                </div>
+                <div class="totalbox_amount">	
+                    $ {{ head.amount_total|format_currency|righted(12) }}
+                </div>
+            </div>
+           <div class="parent_footer_line" style="border-width:0px;">
+                <div  class="footer_reference footer_reference_end">
+                    &nbsp;
+                </div>
+                <div style="
+                    float:left;
+                    width: 176px;
+                    height: 17px;
+                    margin-left: 9px;
+                    margin-top: 0px;
+                    padding-right: 10px;
+                    padding-bottom: 0px;
+                    line-height: 18px;
+                    padding-top: 4px;
+                    padding-left: 10px;;
+                    ">
+                </div>
+            </div>
+            <div class="remarks">
+                OBSERVACIONES
+            </div>
+            <div class="ted_stamp">
+                <img src="/static/test.png" /><br />
+                Timbre Electrónico SII<br>
+                Res. {{ head.company_sii_resolution_number }} del {{ head.company_sii_resolution_year }}<br>
+                Verifique documento: www.sii.cl<br>
+            </div>
+        </div>
+{% endblock %}
